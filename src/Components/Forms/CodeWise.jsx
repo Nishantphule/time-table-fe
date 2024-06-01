@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 const CodeWise = () => {
-
+    const navigate = useNavigate();
     const [paperCodes, setPaperCodes] = useState([]);
     const [selectedPaperCode, setSelectedPaperCode] = useState('');
     const [error, setError] = useState('');
@@ -22,6 +23,7 @@ const CodeWise = () => {
         } else {
             setError('');
             // Proceed with form submission logic here
+            navigate(`/timetable?filter=Papercode&papercode=${selectedPaperCode}`);
             console.log('Form submitted with paper code:', selectedPaperCode);
         }
     };

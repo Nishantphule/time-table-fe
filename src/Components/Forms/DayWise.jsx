@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const DayWise = () => {
-
+    const navigate = useNavigate()
     const [days, setDays] = useState([]);
     const [selectedDay, setSelectedDay] = useState('');
     const [selectedSlot, setSelectedSlot] = useState('');
@@ -23,6 +24,7 @@ const DayWise = () => {
         } else {
             setError('');
             // Handle form submission logic here
+            navigate(`/timetable?filter=Daywise&day=${selectedDay}&slot=${selectedSlot}`);
             console.log('Form submitted with:', {
                 selectedDay,
                 selectedSlot,

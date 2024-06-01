@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import axios from "axios"
+import { useNavigate } from 'react-router-dom'
 
 const InstituteWise = () => {
+    const navigate = useNavigate()
     const [institutes, setInstitutes] = useState(["Pune university", "Mumbai university"])
     const [codes, setCodes] = useState(["1", "2", "3"])
     const [selectedInstitute, setSelectedInstitute] = useState('');
@@ -30,6 +32,7 @@ const InstituteWise = () => {
         } else {
             setError('');
             // Handle form submission logic here
+            navigate(`/timetable?filter=InstituteWise&institute=${selectedInstitute}&code=${selectedCode}`);
             console.log('Form submitted with:', {
                 selectedInstitute,
                 selectedCode,
