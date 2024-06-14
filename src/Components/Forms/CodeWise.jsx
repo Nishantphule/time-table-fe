@@ -11,7 +11,7 @@ const CodeWise = () => {
 
     useEffect(() => {
         // Fetch paper codes from the backend
-        axios.get('https://api.example.com/paper-codes')
+        axios.get('http://localhost:3001/papercode')
             .then(response => setPaperCodes(response.data))
             .catch(error => console.error('Error fetching paper codes:', error));
     }, []);
@@ -53,9 +53,9 @@ const CodeWise = () => {
                                             className="select"
                                         >
                                             <option value="">--Select--</option>
-                                            {paperCodes.map(paperCode => (
-                                                <option key={paperCode.id} value={paperCode.id}>
-                                                    {paperCode.name}
+                                            {paperCodes.map((paperCode,i) => (
+                                                <option style={{font:"14px"}} key={i} value={paperCode.paper_code}>
+                                                    {paperCode.paper_code}
                                                 </option>
                                             ))}
                                         </select>

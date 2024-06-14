@@ -1,17 +1,28 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom';
 
 const TimeTable = () => {
     const location = useLocation();
     const [filter, setFilter] = useState("")
+    const [day,setDays] = useState([]);
 
     useEffect(() => {
         // Access query parameters
         const searchParams = new URLSearchParams(location.search);
-        const examcenter = searchParams.get('examcenter');
         const filter = searchParams.get('filter');
         setFilter(filter)
-        console.log('examcenter:', examcenter);
+        if(filter === "Coursewise"){
+            const course_code = searchParams.get("coursecode")
+            const year_code = searchParams.get("yearsemester")
+            const master_code = searchParams.get("mastercode")
+
+            axios.get(`http://localhost:3001/coursewise/dayquery/${course_code}/${year_code}/${master_code}`)
+            .then(response => setDays(response.data))
+            .catch(error => console.error('Error fetching master codes:', error));
+
+            console.log(day);
+        }
     }, [location]);
 
     return (

@@ -4,24 +4,24 @@ import { useNavigate } from 'react-router-dom'
 
 const InstituteWise = () => {
     const navigate = useNavigate()
-    const [institutes, setInstitutes] = useState(["Pune university", "Mumbai university"])
+    const [institutes, setInstitutes] = useState([])
     const [codes, setCodes] = useState(["1", "2", "3"])
     const [selectedInstitute, setSelectedInstitute] = useState('');
     const [selectedCode, setSelectedCode] = useState('');
     const [error, setError] = useState('');
 
+    useEffect(() => {
+        // Fetch the data from the backend and set the state
+        // Replace these URLs with your actual backend endpoints
+        axios.get('http://localhost:3001/institutes')
+            .then(response => setInstitutes([...response.data].map(data=>{
+                return ({name:data.inst_name,region:data.dte_region})})))
+            .catch(error => console.error('Error fetching institutes:', error));
 
-    // useEffect(() => {
-    //     // Fetch the data from the backend and set the state
-    //     // Replace these URLs with your actual backend endpoints
-    //     axios.get('https://api.example.com/institutes')
-    //         .then(response => setInstitutes(response.data))
-    //         .catch(error => console.error('Error fetching institutes:', error));
-
-    //     axios.get('https://api.example.com/codes')
-    //         .then(response => setCodes(response.data))
-    //         .catch(error => console.error('Error fetching codes:', error));
-    // }, []);
+        axios.get('http://localhost:3001/institutes')
+            .then(response => setCodes([...response.data].map(data=>data.inst_id)))
+            .catch(error => console.error('Error fetching codes:', error));
+    }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -67,11 +67,45 @@ const InstituteWise = () => {
                                             className="select"
                                         >
                                             <option value="">--Select--</option>
-                                            {institutes.map((institute, i) => (
-                                                <option key={i} value={institute.id}>
-                                                    {institute}
-                                                </option>
-                                            ))}
+                                            <option value="" disabled style={{color:"green",fontSize:"14px",fontWeight:"bold"}}>----- Mumbai Region -----</option>
+                                            {institutes.map((institute, i) => {
+                                                if(institute.region === "Mumbai"){
+                                                   return ( <option style={{fontSize:"14px"}} key={i} value={institute.name}>
+                                                    {institute.name}
+                                                </option>)
+                                                }
+                                            }
+                                            )}
+                                            <option value="" disabled></option>
+                                            <option value="" disabled style={{color:"green",fontSize:"14px",fontWeight:"bold"}}>----- Pune Region -----</option>
+                                            {institutes.map((institute, i) => {
+                                                if(institute.region === "Pune"){
+                                                   return ( <option style={{fontSize:"14px"}} key={i} value={institute.name}>
+                                                    {institute.name}
+                                                </option>)
+                                                }
+                                            }
+                                            )}
+                                            <option value="" disabled></option>
+                                            <option value="" disabled style={{color:"green",fontSize:"14px",fontWeight:"bold"}}>----- Nagpur Region -----</option>
+                                            {institutes.map((institute, i) => {
+                                                if(institute.region === "Nagpur"){
+                                                   return ( <option style={{fontSize:"14px"}} key={i} value={institute.name}>
+                                                    {institute.name}
+                                                </option>)
+                                                }
+                                            }
+                                            )}
+                                            <option value="" disabled></option>
+                                            <option value="" disabled style={{color:"green",fontSize:"14px",fontWeight:"bold"}}>----- Chhatrapati Sambhaji Nagar Region -----</option>
+                                            {institutes.map((institute, i) => {
+                                                if(institute.region === "Chhatrapati Sambhaji Nagar"){
+                                                   return ( <option style={{fontSize:"14px"}} key={i} value={institute.name}>
+                                                    {institute.name}
+                                                </option>)
+                                                }
+                                            }
+                                            )}
                                         </select>
                                     </td>
                                 </tr>

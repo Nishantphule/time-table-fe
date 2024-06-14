@@ -12,7 +12,7 @@ const CenterWise = () => {
 
     useEffect(() => {
         // Fetch exam centers from the backend
-        axios.get('https://api.example.com/exam-centers')
+        axios.get('http://localhost:3001/examcenter')
             .then(response => setExamCenters(response.data))
             .catch(error => console.error('Error fetching exam centers:', error));
     }, []);
@@ -55,8 +55,8 @@ const CenterWise = () => {
                                         >
                                             <option value="">--Select--</option>
                                             {examCenters.map((examCenter, i) => (
-                                                <option key={i} value={examCenter.id}>
-                                                    {examCenter}
+                                                <option key={i} value={examCenter.exam_center}>
+                                                    {examCenter.exam_center}
                                                 </option>
                                             ))}
                                         </select>

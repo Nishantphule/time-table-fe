@@ -6,11 +6,11 @@ const CourseWise = () => {
     const navigate = useNavigate();
 
     const [courseCodes, setCourseCodes] = useState([1, 2, 3, 4]);
-    const [allYearSemesters, setAllYearSemesters] = useState([{ years: [1, 2, 3, 4], courseCode: 1 }]);
+    const [allYearSemesters, setAllYearSemesters] = useState([]);
     const [allMasterCodes, setAllMasterCodes] = useState([]);
 
-    const [filteredYearSemesters, setFilteredYearSemesters] = useState([]);
-    const [filteredMasterCodes, setFilteredMasterCodes] = useState([]);
+    // const [filteredYearSemesters, setFilteredYearSemesters] = useState([]);
+    // const [filteredMasterCodes, setFilteredMasterCodes] = useState([]);
 
     const [selectedCourseCode, setSelectedCourseCode] = useState('');
     const [selectedYearSemester, setSelectedYearSemester] = useState('');
@@ -18,30 +18,22 @@ const CourseWise = () => {
 
     const [error, setError] = useState('');
 
-    // useEffect(() => {
-    //     // Fetch all data from the backend when the component mounts
-    //     axios.get('https://api.example.com/course-codes')
-    //         .then(response => setCourseCodes(response.data))
-    //         .catch(error => console.error('Error fetching course codes:', error));
-
-    //     axios.get('https://api.example.com/year-semesters')
-    //         .then(response => setAllYearSemesters(response.data))
-    //         .catch(error => console.error('Error fetching year/semesters:', error));
-
-    //     axios.get('https://api.example.com/master-codes')
-    //         .then(response => setAllMasterCodes(response.data))
-    //         .catch(error => console.error('Error fetching master codes:', error));
-    // }, []);
+    useEffect(() => {
+        // Fetch all data from the backend when the component mounts
+        axios.get('http://localhost:3001/coursewise/coursecode')
+            .then(response => setCourseCodes([...response.data].map(data=>{
+                return {code:data.course_code,name:data.course_name}})))
+            .catch(error => console.error('Error fetching course codes:', error));
+    }, []);
 
     useEffect(() => {
         // Filter year/semesters based on selected course code
         if (selectedCourseCode) {
-            setFilteredYearSemesters(allYearSemesters.filter(item => item.courseCode === selectedCourseCode));
-            console.log(filteredYearSemesters)
+            axios.get(`http://localhost:3001/coursewise/yearcode/${selectedCourseCode}`)
+            .then(response => setAllYearSemesters(response.data))
+            .catch(error => console.error('Error fetching year/semesters:', error));
         } else {
-            setFilteredYearSemesters([]);
             setSelectedYearSemester('');
-            setFilteredMasterCodes([]);
             setSelectedMasterCode('');
         }
     }, [selectedCourseCode, allYearSemesters]);
@@ -49,13 +41,13 @@ const CourseWise = () => {
     useEffect(() => {
         // Filter master codes based on selected course code and year/semester
         if (selectedCourseCode && selectedYearSemester) {
-            setFilteredMasterCodes(allMasterCodes.filter(item =>
-                item.courseCode === selectedCourseCode && item.yearSemester === selectedYearSemester));
+            axios.get(`http://localhost:3001/coursewise/mastercode/${selectedCourseCode}/${selectedYearSemester}`)
+            .then(response => setAllMasterCodes(response.data))
+            .catch(error => console.error('Error fetching master codes:', error));
         } else {
-            setFilteredMasterCodes([]);
             setSelectedMasterCode('');
         }
-    }, [selectedCourseCode, selectedYearSemester, allMasterCodes]);
+    }, [selectedCourseCode, selectedYearSemester]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -100,11 +92,13 @@ const CourseWise = () => {
                                             className="select"
                                         >
                                             <option value="">--Select--</option>
-                                            {courseCodes.map((course, i) => (
-                                                <option key={i} value={course.id}>
-                                                    {course}
+                                            {courseCodes.map((course, i) => {
+                                                if(course.code!=="--"){
+                                                return(
+                                                    <option style={{fontSize:"14px"}} key={i} value={course.code}>
+                                                    {course.code} - {course.name}
                                                 </option>
-                                            ))}
+                                            )}})}
                                         </select>
                                     </td>
                                 </tr>
@@ -122,9 +116,9 @@ const CourseWise = () => {
                                             disabled={!selectedCourseCode}
                                         >
                                             <option value="">--Select--</option>
-                                            {filteredYearSemesters.map((yearSemester, i) => (
-                                                <option key={i} value={yearSemester}>
-                                                    {yearSemester}
+                                            {allYearSemesters.map((yearSemester, i) => (
+                                                <option style={{fontSize:"14px"}} key={i} value={yearSemester.year_code}>
+                                                    {yearSemester.year_code}
                                                 </option>
                                             ))}
                                         </select>
@@ -141,12 +135,12 @@ const CourseWise = () => {
                                             value={selectedMasterCode}
                                             onChange={(e) => setSelectedMasterCode(e.target.value)}
                                             className="select"
-                                            disabled={!selectedCourseCode || !selectedYearSemester}
+                                            disabled={!selectedYearSemester}
                                         >
                                             <option value="">--Select--</option>
-                                            {filteredMasterCodes.map((masterCode, i) => (
-                                                <option key={i} value={masterCode}>
-                                                    {masterCode}
+                                            {allMasterCodes.map((data, i) => (
+                                                <option key={i} value={data.master_code}>
+                                                    {data.master_code}
                                                 </option>
                                             ))}
                                         </select>
