@@ -7,6 +7,7 @@ import "./App.css";
 // import CenterWise from './Components/Forms/CenterWise';
 import Home from "./Components/Home";
 import CoursewiseTT from "./Components/Timetables/CoursewiseTT";
+import InstitutewiseTT from "./Components/Timetables/InstitutewiseTT";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/coursewise" element={<CoursewiseTT />} />
+        <Route path="/institutewise" element={<InstitutewiseTT />} />
       </Routes>
 
       <div className="notebook" style={{ margin: "5px" }}>

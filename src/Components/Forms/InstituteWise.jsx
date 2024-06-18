@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const InstituteWise = () => {
   const navigate = useNavigate();
+  const [data, setData] = useState([]);
   const [institutes, setInstitutes] = useState([]);
   const [codes, setCodes] = useState([]);
   const [selectedInstitute, setSelectedInstitute] = useState("");
@@ -14,18 +15,19 @@ const InstituteWise = () => {
     // Fetch the data from the backend and set the state
     // Replace these URLs with your actual backend endpoints
     axios
-      .get("http://localhost:3001/institutes")
-      .then((response) =>
+      .get("http://localhost:3001/institutewise/institutes")
+      .then((response) => {
+        setData(response.data);
         setInstitutes(
           [...response.data].map((data) => {
             return { name: data.inst_name, region: data.dte_region };
           })
-        )
-      )
+        );
+      })
       .catch((error) => console.error("Error fetching institutes:", error));
 
     axios
-      .get("http://localhost:3001/institutes")
+      .get("http://localhost:3001/institutewise/institutes")
       .then((response) =>
         setCodes([...response.data].map((data) => data.inst_id))
       )
@@ -40,10 +42,22 @@ const InstituteWise = () => {
       setError("Please select only one value from either dropdown.");
     } else {
       setError("");
+
       // Handle form submission logic here
-      navigate(
-        `/timetable?filter=InstituteWise&institute=${selectedInstitute}&code=${selectedCode}`
-      );
+      if (selectedInstitute) {
+        const code = [...data].filter(
+          (item) => item.inst_name === selectedInstitute
+        );
+        navigate(
+          `/institutewise?institute=${selectedInstitute}&code=${code[0].inst_id}`
+        );
+      } else {
+        const name = [...data].filter((item) => item.inst_id === selectedCode);
+        navigate(
+          `/institutewise?institute=${name[0].inst_name}&code=${selectedCode}`
+        );
+      }
+
       console.log("Form submitted with:", {
         selectedInstitute,
         selectedCode,
@@ -212,7 +226,7 @@ const InstituteWise = () => {
                     >
                       <option value="">--Select--</option>
                       {codes.map((code, i) => (
-                        <option key={i} value={code.id}>
+                        <option key={i} value={code}>
                           {code}
                         </option>
                       ))}

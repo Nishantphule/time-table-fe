@@ -80,7 +80,10 @@ const CoursewiseTT = () => {
           <tr>
             <th colSpan="4" style={{ color: "#506a9e", textAlign: "center" }}>
               {`Course:${schema.course_code}(${schema.course_name})  Year/Semester:${schema.year_code}   Master:${schema.master_code}`}
-              <button onClick={() => navigate("/")}>
+              <button
+                style={{ marginLeft: "10px" }}
+                onClick={() => navigate("/")}
+              >
                 Click here to go Back
               </button>
             </th>
