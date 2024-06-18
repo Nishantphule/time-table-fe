@@ -48,14 +48,10 @@ const InstituteWise = () => {
         const code = [...data].filter(
           (item) => item.inst_name === selectedInstitute
         );
-        navigate(
-          `/institutewise?institute=${selectedInstitute}&code=${code[0].inst_id}`
-        );
+        navigate(`/institutewise?code=${code[0].inst_id}`);
       } else {
         const name = [...data].filter((item) => item.inst_id === selectedCode);
-        navigate(
-          `/institutewise?institute=${name[0].inst_name}&code=${selectedCode}`
-        );
+        navigate(`/institutewise?code=${selectedCode}`);
       }
 
       console.log("Form submitted with:", {

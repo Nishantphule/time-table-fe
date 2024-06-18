@@ -14,16 +14,30 @@ const InstitutewiseTT = () => {
   const [examdays, setExamDays] = useState([]);
   const [timetableM, setTimetableM] = useState([]);
   const [timetableA, setTimetableA] = useState([]);
+  const [groupedtimetableM, setGroupedTimetableM] = useState([]);
+  const [groupedtimetableA, setGroupedTimetableA] = useState([]);
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const code = searchParams.get("code");
+    axios
+      .get("http://localhost:3001/institutewise/institutes")
+      .then((response) => {
+        setInstitute({
+          code: code,
+          name: [...response.data].filter((data) => {
+            return data.inst_id === code;
+          })[0].inst_name,
+        });
+      })
+      .catch((error) => console.error("Error fetching institutes:", error));
+  }, [location.search]);
 
   useEffect(() => {
     // Access query parameters
     const searchParams = new URLSearchParams(location.search);
 
     async function getTimetableData() {
-      const name = searchParams.get("institute");
-      const code = searchParams.get("code");
-      setInstitute({ name, code });
-
       try {
         const response = await axios.get(
           `http://localhost:3001/institutewise/examdays`
@@ -35,7 +49,8 @@ const InstitutewiseTT = () => {
     }
     getTimetableData();
   }, [location.search]);
-  console.log(examdays[0]);
+
+  console.log(examdays);
   useEffect(() => {
     async function fetchTimetable() {
       try {
@@ -68,6 +83,52 @@ const InstitutewiseTT = () => {
     fetchTimetable();
   }, [examdays, institute]);
 
+  useEffect(() => {
+    function groupAndAddSchemaKey(examData) {
+      // Create a map to group by the common keys
+      let results = [];
+      examData.forEach((data) => {
+        const groupedData = {};
+        data.forEach((item) => {
+          const key = `${item.exam_dayw}-${item.date}-${item.paper_code}-${item.daysession}`;
+
+          if (!groupedData[key]) {
+            // Initialize the group if it doesn't exist
+            groupedData[key] = {
+              exam_dayw: item.exam_dayw,
+              date: item.date,
+              paper_code: item.paper_code,
+              daysession: item.daysession,
+              subject_name: item.subject_name,
+              duration: item.duration,
+              paper_time: item.paper_time,
+              schema: [],
+            };
+          }
+
+          // Add the schema to the group
+          groupedData[key].schema.push(
+            `${item.course_code}-${item.year_code}-${item.master_code}`
+          );
+        });
+
+        // Convert the grouped data from an object back to an array
+        const result = Object.values(groupedData).map((group) => {
+          group.schema = group.schema.join(", ");
+          return group;
+        });
+
+        results.push(result);
+      });
+      return results;
+    }
+    const groupedExamDataM = groupAndAddSchemaKey(timetableM);
+    const groupedExamDataA = groupAndAddSchemaKey(timetableA);
+    console.log(groupedExamDataM);
+    setGroupedTimetableM(groupedExamDataM);
+    setGroupedTimetableA(groupedExamDataA);
+  }, [timetableM]);
+
   const navigate = useNavigate();
 
   const headingStyle = { backgroundColor: "#cad9f1", color: "#506a9e" };
@@ -97,6 +158,99 @@ const InstitutewiseTT = () => {
               </button>
             </th>
           </tr>
+          {groupedtimetableM.length > 0 ? (
+            groupedtimetableM.map((table, i) => {
+              if (table[0] !== undefined) {
+                return (
+                  <>
+                    <tr>
+                      <th
+                        colSpan="4"
+                        style={{ color: "#800000", textAlign: "center" }}
+                      >
+                        Date: {table[0].date}{" "}
+                        {table[0].daysession === "A" ? "Afternoon" : "Morning"}{" "}
+                        Day:
+                        {table[0].exam_dayw}
+                      </th>
+                    </tr>
+                    <tr>
+                      <th style={headingStyle}>Time Slot</th>
+                      <th style={headingStyle}>Subject Code</th>
+                      <th style={headingStyle}>Subject Name</th>
+                      <th style={headingStyle}>Schema</th>
+                    </tr>
+                    {table.map((data, i) => {
+                      return (
+                        <tr>
+                          <th>{data.paper_time}</th>
+                          <th>{data.paper_code}</th>
+                          <th>{data.subject_name}</th>
+                          <th>{data.schema}</th>
+                        </tr>
+                      );
+                    })}
+                  </>
+                );
+              }
+            })
+          ) : (
+            <h2
+              style={{
+                padding: "5px 0px",
+                textAlign: "center",
+                fontSize: "16px",
+                fontWeight: "bold",
+                color: "red",
+              }}
+            >
+              No Data to Display
+            </h2>
+          )}
+          {groupedtimetableA.length > 0 ? (
+            groupedtimetableA.map((table, i) => {
+              return table.map((data) => {
+                return (
+                  <>
+                    <tr>
+                      <th
+                        colSpan="4"
+                        style={{ color: "#800000", textAlign: "center" }}
+                      >
+                        Date: {data.date}{" "}
+                        {data.daysession === "A" ? "Afternoon" : "Morning"} Day:
+                        {data.exam_dayw}
+                      </th>
+                    </tr>
+                    <tr>
+                      <th style={headingStyle}>Time Slot</th>
+                      <th style={headingStyle}>Subject Code</th>
+                      <th style={headingStyle}>Subject Name</th>
+                      <th style={headingStyle}>Schema</th>
+                    </tr>
+                    <tr>
+                      <th>{data.paper_time}</th>
+                      <th>{data.paper_code}</th>
+                      <th>{data.subject_name}</th>
+                      <th>{data.schema}</th>
+                    </tr>
+                  </>
+                );
+              });
+            })
+          ) : (
+            <h2
+              style={{
+                padding: "5px 0px",
+                textAlign: "center",
+                fontSize: "16px",
+                fontWeight: "bold",
+                color: "red",
+              }}
+            >
+              No Data to Display
+            </h2>
+          )}
         </tbody>
       </table>
     </div>
