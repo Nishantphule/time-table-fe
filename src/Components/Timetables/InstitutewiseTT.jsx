@@ -34,9 +34,6 @@ const InstitutewiseTT = () => {
   }, [location.search]);
 
   useEffect(() => {
-    // Access query parameters
-    const searchParams = new URLSearchParams(location.search);
-
     async function getTimetableData() {
       try {
         const response = await axios.get(
@@ -125,9 +122,10 @@ const InstitutewiseTT = () => {
     const groupedExamDataM = groupAndAddSchemaKey(timetableM);
     const groupedExamDataA = groupAndAddSchemaKey(timetableA);
     console.log(groupedExamDataM);
+    console.log(groupedExamDataA, "A");
     setGroupedTimetableM(groupedExamDataM);
     setGroupedTimetableA(groupedExamDataA);
-  }, [timetableM]);
+  }, [timetableM, timetableA]);
 
   const navigate = useNavigate();
 
@@ -192,6 +190,8 @@ const InstitutewiseTT = () => {
                     })}
                   </>
                 );
+              } else {
+                return "";
               }
             })
           ) : (
@@ -209,7 +209,7 @@ const InstitutewiseTT = () => {
           )}
           {groupedtimetableA.length > 0 ? (
             groupedtimetableA.map((table, i) => {
-              return table.map((data) => {
+              if (table[0] !== undefined) {
                 return (
                   <>
                     <tr>
@@ -217,9 +217,10 @@ const InstitutewiseTT = () => {
                         colSpan="4"
                         style={{ color: "#800000", textAlign: "center" }}
                       >
-                        Date: {data.date}{" "}
-                        {data.daysession === "A" ? "Afternoon" : "Morning"} Day:
-                        {data.exam_dayw}
+                        Date: {table[0].date}{" "}
+                        {table[0].daysession === "A" ? "Afternoon" : "Morning"}{" "}
+                        Day:
+                        {table[0].exam_dayw}
                       </th>
                     </tr>
                     <tr>
@@ -228,15 +229,21 @@ const InstitutewiseTT = () => {
                       <th style={headingStyle}>Subject Name</th>
                       <th style={headingStyle}>Schema</th>
                     </tr>
-                    <tr>
-                      <th>{data.paper_time}</th>
-                      <th>{data.paper_code}</th>
-                      <th>{data.subject_name}</th>
-                      <th>{data.schema}</th>
-                    </tr>
+                    {table.map((data, i) => {
+                      return (
+                        <tr>
+                          <th>{data.paper_time}</th>
+                          <th>{data.paper_code}</th>
+                          <th>{data.subject_name}</th>
+                          <th>{data.schema}</th>
+                        </tr>
+                      );
+                    })}
                   </>
                 );
-              });
+              } else {
+                return "";
+              }
             })
           ) : (
             <h2
