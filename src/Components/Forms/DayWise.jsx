@@ -4,38 +4,19 @@ import { useNavigate } from "react-router-dom";
 
 const DayWise = () => {
   const navigate = useNavigate();
-  const [days, setDays] = useState([
-    "All",
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
-    "11",
-    "12",
-    "13",
-    "14",
-    "15",
-    "16",
-    "17",
-    "18",
-  ]);
+  const [days, setDays] = useState([]);
   const [selectedDay, setSelectedDay] = useState("");
   const [selectedSlot, setSelectedSlot] = useState("");
 
   const [error, setError] = useState("");
 
-  // useEffect(() => {
-  //     // Fetch days from the backend
-  //     axios.get('https://api.example.com/days')
-  //         .then(response => setDays(response.data))
-  //         .catch(error => console.error('Error fetching days:', error));
-  // }, []);
+  useEffect(() => {
+    // Fetch days from the backend
+    axios
+      .get("http://localhost:3001/daywise/examdays")
+      .then((response) => setDays(response.data))
+      .catch((error) => console.error("Error fetching days:", error));
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -44,9 +25,7 @@ const DayWise = () => {
     } else {
       setError("");
       // Handle form submission logic here
-      navigate(
-        `/timetable?filter=Daywise&day=${selectedDay}&slot=${selectedSlot}`
-      );
+      navigate(`/daywise?day=${selectedDay}&slot=${selectedSlot}`);
       console.log("Form submitted with:", {
         selectedDay,
         selectedSlot,
@@ -84,13 +63,17 @@ const DayWise = () => {
                       className="select"
                     >
                       <option value="">--Select--</option>
+                      <option value="all" style={{ fontSize: "14px" }}>
+                        All
+                      </option>
+
                       {days.map((day, i) => (
                         <option
                           style={{ fontSize: "14px" }}
                           key={i}
-                          value={day}
+                          value={day.exam_dayw}
                         >
-                          {day}
+                          {day.exam_dayw}
                         </option>
                       ))}
                     </select>
@@ -114,10 +97,10 @@ const DayWise = () => {
                       <option style={{ fontSize: "14px" }} value="all">
                         All
                       </option>
-                      <option style={{ fontSize: "14px" }} value="morning">
+                      <option style={{ fontSize: "14px" }} value="M">
                         Morning
                       </option>
-                      <option style={{ fontSize: "14px" }} value="afternoon">
+                      <option style={{ fontSize: "14px" }} value="A">
                         Afternoon
                       </option>
                     </select>

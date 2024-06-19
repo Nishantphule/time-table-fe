@@ -47,7 +47,6 @@ const InstitutewiseTT = () => {
     getTimetableData();
   }, [location.search]);
 
-  console.log(examdays);
   useEffect(() => {
     async function fetchTimetable() {
       try {
@@ -56,11 +55,9 @@ const InstitutewiseTT = () => {
             `http://localhost:3001/institutewise/timetable/${institute.code}/${d.exam_dayw}/M`
           )
         );
-
         const responsesM = await Promise.all(timetablePromisesM);
         const timetableDataM = responsesM.map((response) => response.data);
         setTimetableM(timetableDataM);
-        console.log(timetableDataM);
 
         const timetablePromisesA = examdays.map((d) =>
           axios.get(
@@ -71,7 +68,6 @@ const InstitutewiseTT = () => {
         const responsesA = await Promise.all(timetablePromisesA);
         const timetableDataA = responsesA.map((response) => response.data);
         setTimetableA(timetableDataA);
-        console.log(timetableDataA);
       } catch (error) {
         console.error("Error fetching timetable data:", error);
       }

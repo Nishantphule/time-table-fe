@@ -8,6 +8,8 @@ import "./App.css";
 import Home from "./Components/Home";
 import CoursewiseTT from "./Components/Timetables/CoursewiseTT";
 import InstitutewiseTT from "./Components/Timetables/InstitutewiseTT";
+import DaywiseTT from "./Components/Timetables/DaywiseTT";
+import CodewiseTT from "./Components/Timetables/CodewiseTT";
 
 function App() {
   return (
@@ -27,6 +29,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/coursewise" element={<CoursewiseTT />} />
         <Route path="/institutewise" element={<InstitutewiseTT />} />
+        <Route path="/daywise" element={<DaywiseTT />} />
+        <Route path="/papercodewise" element={<CodewiseTT />} />
       </Routes>
 
       <div className="notebook" style={{ margin: "5px" }}>
