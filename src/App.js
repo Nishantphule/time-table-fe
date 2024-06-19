@@ -10,6 +10,7 @@ import CoursewiseTT from "./Components/Timetables/CoursewiseTT";
 import InstitutewiseTT from "./Components/Timetables/InstitutewiseTT";
 import DaywiseTT from "./Components/Timetables/DaywiseTT";
 import CodewiseTT from "./Components/Timetables/CodewiseTT";
+import CenterwiseTT from "./Components/Timetables/CenterwiseTT";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path="/institutewise" element={<InstitutewiseTT />} />
         <Route path="/daywise" element={<DaywiseTT />} />
         <Route path="/papercodewise" element={<CodewiseTT />} />
+        <Route path="/centerwise" element={<CenterwiseTT />} />
       </Routes>
 
       <div className="notebook" style={{ margin: "5px" }}>

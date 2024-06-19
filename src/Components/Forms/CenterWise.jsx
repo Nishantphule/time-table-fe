@@ -25,7 +25,7 @@ const CenterWise = () => {
     } else {
       setError("");
       // Proceed with form submission logic here
-      navigate(`/timetable?filter=Examcenter&examcenter=${selectedExamCenter}`);
+      navigate(`/centerwise?examcenter=${selectedExamCenter}`);
       console.log("Form submitted with exam center:", selectedExamCenter);
     }
   };
