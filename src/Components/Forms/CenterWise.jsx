@@ -1,31 +1,35 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { ParamsContext } from "../../contexts/paramsContextProvider";
 
 const CenterWise = () => {
-  // const history = useH();
   const navigate = useNavigate();
-
   const [examCenters, setExamCenters] = useState([]);
-  const [selectedExamCenter, setSelectedExamCenter] = useState("");
+  const { setSelectedExamCenter, selectedExamCenter } =
+    useContext(ParamsContext);
+  const [center, setCenter] = useState("");
   const [error, setError] = useState("");
 
   useEffect(() => {
     // Fetch exam centers from the backend
     axios
-      .get("http://localhost:3001/examcenter")
-      .then((response) => setExamCenters(response.data))
+      .get("http://localhost:3001/examcenterwise/examcenter")
+      .then((response) => {
+        setExamCenters(response.data);
+      })
       .catch((error) => console.error("Error fetching exam centers:", error));
   }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!selectedExamCenter) {
+    if (!center) {
       setError("Please select an exam center.");
     } else {
       setError("");
       // Proceed with form submission logic here
-      navigate(`/centerwise?examcenter=${selectedExamCenter}`);
+      setSelectedExamCenter(center);
+      navigate(`/centerwise`);
       console.log("Form submitted with exam center:", selectedExamCenter);
     }
   };
@@ -53,8 +57,8 @@ const CenterWise = () => {
                   <td>
                     <select
                       id="exam-center-select"
-                      value={selectedExamCenter}
-                      onChange={(e) => setSelectedExamCenter(e.target.value)}
+                      value={center}
+                      onChange={(e) => setCenter(e.target.value)}
                       className="select"
                     >
                       <option value="">--Select--</option>

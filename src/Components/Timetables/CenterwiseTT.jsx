@@ -1,10 +1,12 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { ParamsContext } from "../../contexts/paramsContextProvider";
 
 const CenterwiseTT = () => {
   const location = useLocation();
-
+  const { selectedExamCenter } = useContext(ParamsContext);
+  const [center_name, setCenterName] = useState("");
   const [exam_center, setExamCenter] = useState(null);
   const [paper_codes, setPapercodes] = useState([]);
   const [days, setDays] = useState([]);
@@ -13,10 +15,20 @@ const CenterwiseTT = () => {
   useEffect(() => {
     // Access query parameters
     const searchParams = new URLSearchParams(location.search);
-    const examcenter = searchParams.get("examcenter");
+    const examcenter = selectedExamCenter;
+    axios
+      .get("http://localhost:3001/institutewise/institutes")
+      .then((response) => {
+        setCenterName(
+          [...response.data].filter((data) => {
+            return parseInt(data.inst_id) == examcenter;
+          })[0].inst_name
+        );
+      })
+      .catch((error) => console.error("Error fetching institutes:", error));
     setExamCenter(examcenter);
   }, [location.search]);
-
+  console.log(center_name);
   useEffect(() => {
     function groupAndAddSchemaKey(examData) {
       // Create a map to group by the common keys
@@ -112,7 +124,7 @@ const CenterwiseTT = () => {
         <tbody>
           <tr>
             <th colSpan="5" style={{ color: "#506a9e", textAlign: "center" }}>
-              {`Exam Center:${exam_center}`}
+              {`${center_name}`}
               <button
                 style={{ marginLeft: "10px" }}
                 onClick={() => navigate("/")}

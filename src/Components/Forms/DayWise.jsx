@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { ParamsContext } from "../../contexts/paramsContextProvider";
 
 const DayWise = () => {
   const navigate = useNavigate();
+  const { selectedDayParams, setSelectedDayParams } = useContext(ParamsContext);
   const [days, setDays] = useState([]);
   const [selectedDay, setSelectedDay] = useState("");
   const [selectedSlot, setSelectedSlot] = useState("");
@@ -25,10 +27,10 @@ const DayWise = () => {
     } else {
       setError("");
       // Handle form submission logic here
-      navigate(`/daywise?day=${selectedDay}&slot=${selectedSlot}`);
+      setSelectedDayParams({ day: selectedDay, slot: selectedSlot });
+      navigate(`/daywise`);
       console.log("Form submitted with:", {
-        selectedDay,
-        selectedSlot,
+        selectedDayParams,
       });
     }
   };

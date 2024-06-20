@@ -1,16 +1,18 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { ParamsContext } from "../../contexts/paramsContextProvider";
 
 const CodewiseTT = () => {
   const location = useLocation();
+  const { selectedPapercode, setSelectedPapercode } = useContext(ParamsContext);
   const [papercode, setPapercode] = useState("");
   const [examdayw, setExamdayw] = useState(0);
   const [timetable, setTimetable] = useState([]);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    const papercode = searchParams.get("papercode");
+    const papercode = selectedPapercode;
     setPapercode(papercode);
   }, [location.search]);
 

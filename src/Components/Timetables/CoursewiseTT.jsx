@@ -1,9 +1,11 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { ParamsContext } from "../../contexts/paramsContextProvider";
 
 const CoursewiseTT = () => {
   const location = useLocation();
+  const { selectedCourseParams } = useContext(ParamsContext);
   const [schema, setSchema] = useState({
     course_name: "",
     course_code: "",
@@ -18,11 +20,14 @@ const CoursewiseTT = () => {
     const searchParams = new URLSearchParams(location.search);
 
     async function getTimetableData() {
-      const course_code = searchParams.get("coursecode");
-      const course_name = searchParams.get("name");
-      const year_code = searchParams.get("yearsemester");
-      const master_code = searchParams.get("mastercode");
-      setSchema({ course_name, course_code, year_code, master_code });
+      const { course_code, course_name, year_code, master_code } =
+        selectedCourseParams;
+      setSchema({
+        course_name,
+        course_code,
+        year_code,
+        master_code,
+      });
 
       try {
         const response = await axios.get(

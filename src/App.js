@@ -17,15 +17,14 @@ function App() {
     <div className="App">
       {/* Header */}
       <div className="header">
-        <img
-          src="https://online.msbte.co.in/msbte23/assets/images/logo.jpg"
-          alt="Maharashtra State Board of Technical Education"
-          width="650px"
-          height="130px"
-          style={{ objectFit: "contain" }}
-        />
+        <div className="logo">
+          <a href="#" title="Maharashtra State Board of Technical Education">
+            {" "}
+            MSBTE
+          </a>
+        </div>
+        <div className="clear"></div>
       </div>
-
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/coursewise" element={<CoursewiseTT />} />

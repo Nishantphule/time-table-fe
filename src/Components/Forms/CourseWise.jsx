@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { ParamsContext } from "../../contexts/paramsContextProvider";
 
 const CourseWise = () => {
   const navigate = useNavigate();
+  const { selectedCourseParams, setSelectedCourseParams } =
+    useContext(ParamsContext);
 
   const [courseCodes, setCourseCodes] = useState([]);
   const [allYearSemesters, setAllYearSemesters] = useState([]);
@@ -71,13 +74,15 @@ const CourseWise = () => {
       const name = [...courseCodes].filter(
         (course) => course.code === selectedCourseCode
       );
-      navigate(
-        `/coursewise?coursecode=${selectedCourseCode}&name=${name[0].name}&yearsemester=${selectedYearSemester}&mastercode=${selectedMasterCode}`
-      );
+      setSelectedCourseParams({
+        course_code: selectedCourseCode,
+        year_code: selectedYearSemester,
+        master_code: selectedMasterCode,
+        course_name: name[0].name,
+      });
+      navigate(`/coursewise`);
       console.log("Form submitted with:", {
-        selectedCourseCode,
-        selectedYearSemester,
-        selectedMasterCode,
+        selectedCourseParams,
       });
     }
   };

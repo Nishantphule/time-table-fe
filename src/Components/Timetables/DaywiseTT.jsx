@@ -1,10 +1,11 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { ParamsContext } from "../../contexts/paramsContextProvider";
 
 const DaywiseTT = () => {
   const location = useLocation();
-
+  const { selectedDayParams, setSelectedDayParams } = useContext(ParamsContext);
   const [searchParams, setSearchParams] = useState({ day: "", slot: "" });
   const [days, setDays] = useState([]);
   const [slot, setSlot] = useState("");
@@ -12,8 +13,7 @@ const DaywiseTT = () => {
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    const day = searchParams.get("day");
-    const slot = searchParams.get("slot");
+    const { day, slot } = selectedDayParams;
     setSearchParams({ day, slot });
 
     if (day === "all" && slot === "all") {

@@ -7,11 +7,26 @@ body {
   border: 1px solid black;
   border-radius: 10px;
   overflow: hidden;
-  padding: 2px;
+  padding: 0px;
 }
 
 .header {
-  background-color: rgb(171, 194, 238);
+  background: url(../src/assests/imgs/logobg.jpg) repeat-x;
+  height: 102px;
+  border-bottom: 1px solid #435b8b;
+}
+.logo {
+  background: url("https://online.msbte.co.in/msbte23/assets/images/logo.jpg")
+    no-repeat 10px top;
+  height: 102px;
+  float: left;
+  width: 585px;
+}
+.logo a {
+  width: 585px;
+  overflow: hidden;
+  display: block;
+  text-indent: -9999999px;
 }
 
 .timetable-header {
@@ -21,7 +36,6 @@ body {
   color: #5b74a4;
   font-size: 16px;
 }
-
 
 /* Forms */
 
@@ -75,7 +89,7 @@ body {
   padding: 10px 20px;
   border-radius: 4px;
   border: none;
-  background-color: #007BFF;
+  background-color: #007bff;
   color: white;
   cursor: pointer;
   font-size: 16px;
@@ -88,7 +102,6 @@ body {
 td {
   padding: 10px;
 }
-
 
 /* instructions */
 

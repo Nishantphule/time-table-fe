@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { ParamsContext } from "../../contexts/paramsContextProvider";
 
 const CodeWise = () => {
   const navigate = useNavigate();
+  const { selectedPapercode, setSelectedPapercode } = useContext(ParamsContext);
   const [paperCodes, setPaperCodes] = useState([]);
   const [selectedPaperCode, setSelectedPaperCode] = useState("");
   const [error, setError] = useState("");
@@ -23,8 +25,9 @@ const CodeWise = () => {
     } else {
       setError("");
       // Proceed with form submission logic here
-      navigate(`/papercodewise?papercode=${selectedPaperCode}`);
-      console.log("Form submitted with paper code:", selectedPaperCode);
+      setSelectedPapercode(selectedPaperCode);
+      navigate(`/papercodewise`);
+      console.log("Form submitted with paper code:", selectedPapercode);
     }
   };
   return (

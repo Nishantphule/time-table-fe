@@ -1,15 +1,11 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { ParamsContext } from "../../contexts/paramsContextProvider";
 
 const InstitutewiseTT = () => {
   const location = useLocation();
-  //   const [schema, setSchema] = useState({
-  //     course_name: "",
-  //     course_code: "",
-  //     year_code: 0,
-  //     master_code: "",
-  //   });
+  const { selectedInstituteCode } = useContext(ParamsContext);
   const [institute, setInstitute] = useState({ name: "", code: null });
   const [examdays, setExamDays] = useState([]);
   const [timetableM, setTimetableM] = useState([]);
@@ -19,14 +15,13 @@ const InstitutewiseTT = () => {
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    const code = searchParams.get("code");
     axios
       .get("http://localhost:3001/institutewise/institutes")
       .then((response) => {
         setInstitute({
-          code: code,
+          code: selectedInstituteCode,
           name: [...response.data].filter((data) => {
-            return data.inst_id === code;
+            return data.inst_id === selectedInstituteCode;
           })[0].inst_name,
         });
       })

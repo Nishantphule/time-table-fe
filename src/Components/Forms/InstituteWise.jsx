@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { ParamsContext } from "../../contexts/paramsContextProvider";
 
 const InstituteWise = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState([]);
-  const [institutes, setInstitutes] = useState([]);
+  const [institutes, setInstitutes] = useState({});
   const [codes, setCodes] = useState([]);
+  const { setSelectedInstituteCode } = useContext(ParamsContext);
   const [selectedInstitute, setSelectedInstitute] = useState("");
   const [selectedCode, setSelectedCode] = useState("");
   const [error, setError] = useState("");
@@ -17,10 +18,13 @@ const InstituteWise = () => {
     axios
       .get("http://localhost:3001/institutewise/institutes")
       .then((response) => {
-        setData(response.data);
         setInstitutes(
           [...response.data].map((data) => {
-            return { name: data.inst_name, region: data.dte_region };
+            return {
+              name: data.inst_name,
+              region: data.dte_region,
+              code: data.inst_id,
+            };
           })
         );
       })
@@ -44,14 +48,12 @@ const InstituteWise = () => {
       setError("");
 
       // Handle form submission logic here
-      if (selectedInstitute) {
-        const code = [...data].filter(
-          (item) => item.inst_name === selectedInstitute
-        );
-        navigate(`/institutewise?code=${code[0].inst_id}`);
+      if (selectedCode) {
+        setSelectedInstituteCode(selectedCode);
+        navigate(`/institutewise`);
       } else {
-        const name = [...data].filter((item) => item.inst_id === selectedCode);
-        navigate(`/institutewise?code=${selectedCode}`);
+        setSelectedInstituteCode(selectedInstitute);
+        navigate(`/institutewise`);
       }
 
       console.log("Form submitted with:", {
@@ -110,11 +112,13 @@ const InstituteWise = () => {
                                 <option
                                   style={{ fontSize: "14px" }}
                                   key={i}
-                                  value={institute.name}
+                                  value={institute.code}
                                 >
                                   {institute.name}
                                 </option>
                               );
+                            } else {
+                              return "";
                             }
                           })}
                           <option value="" disabled></option>
@@ -135,11 +139,13 @@ const InstituteWise = () => {
                                 <option
                                   style={{ fontSize: "14px" }}
                                   key={i}
-                                  value={institute.name}
+                                  value={institute.code}
                                 >
                                   {institute.name}
                                 </option>
                               );
+                            } else {
+                              return "";
                             }
                           })}
                           <option value="" disabled></option>
@@ -160,11 +166,13 @@ const InstituteWise = () => {
                                 <option
                                   style={{ fontSize: "14px" }}
                                   key={i}
-                                  value={institute.name}
+                                  value={institute.code}
                                 >
                                   {institute.name}
                                 </option>
                               );
+                            } else {
+                              return "";
                             }
                           })}
                           <option value="" disabled></option>
@@ -187,11 +195,13 @@ const InstituteWise = () => {
                                 <option
                                   style={{ fontSize: "14px" }}
                                   key={i}
-                                  value={institute.name}
+                                  value={institute.code}
                                 >
                                   {institute.name}
                                 </option>
                               );
+                            } else {
+                              return "";
                             }
                           })}
                         </>
