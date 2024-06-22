@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ParamsContext } from "../../contexts/paramsContextProvider";
+import { Button, Card } from "@mui/material";
 
 const InstituteWise = () => {
   const navigate = useNavigate();
@@ -65,7 +66,7 @@ const InstituteWise = () => {
 
   return (
     <div className="col-12 col-md-6 col-lg-4">
-      <div className="form_box" style={{ border: "5px solid #a3bbe7" }}>
+      <Card className="form_box" style={{ border: "5px solid #a3bbe7" }}>
         <div
           className="form_title"
           style={{ background: "#c1d3f3", color: "#325492" }}
@@ -90,7 +91,7 @@ const InstituteWise = () => {
                       name="institutes"
                       value={selectedInstitute}
                       onChange={(e) => setSelectedInstitute(e.target.value)}
-                      className="select"
+                      className="form-select"
                     >
                       <option value="">--Select--</option>
                       {institutes.length ? (
@@ -228,22 +229,33 @@ const InstituteWise = () => {
                       name="codes"
                       value={selectedCode}
                       onChange={(e) => setSelectedCode(e.target.value)}
-                      className="select"
+                      className="form-select"
                     >
                       <option value="">--Select--</option>
-                      {codes.map((code, i) => (
-                        <option key={i} value={code}>
-                          {code}
+                      {codes.length ? (
+                        codes.map((code, i) => (
+                          <option key={i} value={code}>
+                            {code}
+                          </option>
+                        ))
+                      ) : (
+                        <option value="" disabled>
+                          Loading...
                         </option>
-                      ))}
+                      )}
                     </select>
                   </td>
                 </tr>
                 <tr>
                   <td colSpan="2" style={{ textAlign: "center" }}>
-                    <button type="submit" className="button">
-                      Time Table
-                    </button>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      type="submit"
+                      className="button"
+                    >
+                      Institute-wise TimeTable
+                    </Button>
                   </td>
                 </tr>
               </tbody>
@@ -253,7 +265,7 @@ const InstituteWise = () => {
             )}
           </form>
         </div>
-      </div>
+      </Card>
     </div>
   );
 };

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ParamsContext } from "../../contexts/paramsContextProvider";
+import { Button, Card } from "@mui/material";
 
 const CourseWise = () => {
   const navigate = useNavigate();
@@ -88,7 +89,7 @@ const CourseWise = () => {
   };
   return (
     <div className="col-12 col-md-6 col-lg-4">
-      <div className="form_box" style={{ border: "5px solid #b0a9ea" }}>
+      <Card className="form_box" style={{ border: "5px solid #b0a9ea" }}>
         <div
           className="form_title"
           style={{ background: "#d0cdeb", color: "#555086" }}
@@ -115,24 +116,30 @@ const CourseWise = () => {
                       onChange={(e) => {
                         setSelectedCourseCode(e.target.value);
                       }}
-                      className="select"
+                      className="form-select"
                     >
                       <option value="">--Select--</option>
-                      {courseCodes.map((course, i) => {
-                        if (course.code !== "--") {
-                          return (
-                            <option
-                              style={{ fontSize: "14px" }}
-                              key={i}
-                              value={course.code}
-                            >
-                              {course.code} - {course.name}
-                            </option>
-                          );
-                        } else {
-                          return "";
-                        }
-                      })}
+                      {courseCodes.length ? (
+                        courseCodes.map((course, i) => {
+                          if (course.code !== "--") {
+                            return (
+                              <option
+                                style={{ fontSize: "14px" }}
+                                key={i}
+                                value={course.code}
+                              >
+                                {course.code} - {course.name}
+                              </option>
+                            );
+                          } else {
+                            return "";
+                          }
+                        })
+                      ) : (
+                        <option value="" disabled>
+                          Loading...
+                        </option>
+                      )}
                     </select>
                   </td>
                 </tr>
@@ -148,7 +155,7 @@ const CourseWise = () => {
                       name="yearSemesters"
                       value={selectedYearSemester}
                       onChange={(e) => setSelectedYearSemester(e.target.value)}
-                      className="select"
+                      className="form-select"
                       disabled={!selectedCourseCode}
                     >
                       <option value="">--Select--</option>
@@ -176,7 +183,7 @@ const CourseWise = () => {
                       name="masterCodes"
                       value={selectedMasterCode}
                       onChange={(e) => setSelectedMasterCode(e.target.value)}
-                      className="select"
+                      className="form-select"
                       disabled={!selectedYearSemester}
                     >
                       <option value="">--Select--</option>
@@ -190,9 +197,14 @@ const CourseWise = () => {
                 </tr>
                 <tr>
                   <td colSpan="2" style={{ textAlign: "center" }}>
-                    <button type="submit" className="button">
-                      Time Table
-                    </button>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      type="submit"
+                      className="button"
+                    >
+                      Course-wise TimeTable
+                    </Button>
                   </td>
                 </tr>
               </tbody>
@@ -202,7 +214,7 @@ const CourseWise = () => {
             )}
           </form>
         </div>
-      </div>
+      </Card>
     </div>
   );
 };

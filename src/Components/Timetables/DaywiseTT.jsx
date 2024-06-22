@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ParamsContext } from "../../contexts/paramsContextProvider";
+import { Button } from "@mui/material";
 
 const DaywiseTT = () => {
   const location = useLocation();
@@ -149,12 +150,18 @@ const DaywiseTT = () => {
                   ? "Afternoon"
                   : "All"
               }`}
-              <button
-                style={{ marginLeft: "10px" }}
+              <Button
+                variant="contained"
+                size="small"
+                style={{
+                  marginLeft: "10px",
+                  fontSize: "10px",
+                  fontWeight: "bold",
+                }}
                 onClick={() => navigate("/")}
               >
                 Click here to go Back
-              </button>
+              </Button>
             </th>
           </tr>
           {timeTable.length > 0 ? (

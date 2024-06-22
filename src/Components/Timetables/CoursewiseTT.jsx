@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ParamsContext } from "../../contexts/paramsContextProvider";
+import { Button } from "@mui/material";
 
 const CoursewiseTT = () => {
   const location = useLocation();
@@ -85,12 +86,18 @@ const CoursewiseTT = () => {
           <tr>
             <th colSpan="4" style={{ color: "#506a9e", textAlign: "center" }}>
               {`Course:${schema.course_code}(${schema.course_name})  Year/Semester:${schema.year_code}   Master:${schema.master_code}`}
-              <button
-                style={{ marginLeft: "10px" }}
+              <Button
+                variant="contained"
+                size="small"
+                style={{
+                  marginLeft: "10px",
+                  fontSize: "10px",
+                  fontWeight: "bold",
+                }}
                 onClick={() => navigate("/")}
               >
                 Click here to go Back
-              </button>
+              </Button>
             </th>
           </tr>
           {timetable.length > 0 ? (

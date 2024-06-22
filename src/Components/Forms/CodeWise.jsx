@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ParamsContext } from "../../contexts/paramsContextProvider";
+import { Button, Card } from "@mui/material";
 
 const CodeWise = () => {
   const navigate = useNavigate();
@@ -31,8 +32,8 @@ const CodeWise = () => {
     }
   };
   return (
-    <div className="col-12 col-md-6 col-lg-4">
-      <div className="form_box" style={{ border: "5px solid #95d37c" }}>
+    <div className="col-12 col-md-6 col-lg-4 ">
+      <Card className="form_box" style={{ border: "5px solid #95d37c" }}>
         <div
           className="form_title"
           style={{ background: "#d7edc7", color: "#2a5e03" }}
@@ -56,26 +57,37 @@ const CodeWise = () => {
                       id="paper-code-select"
                       value={selectedPaperCode}
                       onChange={(e) => setSelectedPaperCode(e.target.value)}
-                      className="select"
+                      className="form-select"
                     >
                       <option value="">--Select--</option>
-                      {paperCodes.map((paperCode, i) => (
-                        <option
-                          style={{ font: "14px" }}
-                          key={i}
-                          value={paperCode.paper_code}
-                        >
-                          {paperCode.paper_code}
+                      {paperCodes.length ? (
+                        paperCodes.map((paperCode, i) => (
+                          <option
+                            style={{ font: "14px" }}
+                            key={i}
+                            value={paperCode.paper_code}
+                          >
+                            {paperCode.paper_code}
+                          </option>
+                        ))
+                      ) : (
+                        <option value="" disabled>
+                          Loading...
                         </option>
-                      ))}
+                      )}
                     </select>
                   </td>
                 </tr>
                 <tr>
                   <td colSpan="2" style={{ textAlign: "center" }}>
-                    <button type="submit" className="button">
-                      Time Table
-                    </button>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      type="submit"
+                      className="button"
+                    >
+                      Papercode-wise TimeTable
+                    </Button>
                   </td>
                 </tr>
               </tbody>
@@ -85,7 +97,7 @@ const CodeWise = () => {
             )}
           </form>
         </div>
-      </div>
+      </Card>
     </div>
   );
 };

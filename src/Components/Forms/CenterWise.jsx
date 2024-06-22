@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ParamsContext } from "../../contexts/paramsContextProvider";
+import { Button, Card } from "@mui/material";
 
 const CenterWise = () => {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ const CenterWise = () => {
   };
   return (
     <div className="col-12 col-md-6 col-lg-4">
-      <div className="form_box" style={{ border: "5px solid #95d37c" }}>
+      <Card className="form_box" style={{ border: "5px solid #95d37c" }}>
         <div
           className="form_title"
           style={{ background: "#d7edc7", color: "#2a5e03" }}
@@ -59,7 +60,7 @@ const CenterWise = () => {
                       id="exam-center-select"
                       value={center}
                       onChange={(e) => setCenter(e.target.value)}
-                      className="select"
+                      className="form-select"
                     >
                       <option value="">--Select--</option>
                       {examCenters.length ? (
@@ -77,10 +78,14 @@ const CenterWise = () => {
                   </td>
                 </tr>
                 <tr>
-                  <td colSpan="2" style={{ textAlign: "center" }}>
-                    <button type="submit" className="button">
-                      Time Table
-                    </button>
+                  <td
+                    colSpan="2"
+                    style={{ textAlign: "center" }}
+                    className="button"
+                  >
+                    <Button variant="contained" size="small" type="submit">
+                      Examcenter-wise TimeTable
+                    </Button>
                   </td>
                 </tr>
               </tbody>
@@ -90,7 +95,7 @@ const CenterWise = () => {
             )}
           </form>
         </div>
-      </div>
+      </Card>
     </div>
   );
 };

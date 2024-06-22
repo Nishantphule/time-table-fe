@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ParamsContext } from "../../contexts/paramsContextProvider";
+import { Button, Card } from "@mui/material";
 
 const DayWise = () => {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ const DayWise = () => {
 
   return (
     <div className="col-12 col-md-6 col-lg-4">
-      <div className="form_box" style={{ border: "5px solid #9ddde3" }}>
+      <Card className="form_box" style={{ border: "5px solid #9ddde3" }}>
         <div
           className="form_title"
           style={{ background: "#c7eaed", color: "#105c62" }}
@@ -62,22 +63,30 @@ const DayWise = () => {
                       name="days"
                       value={selectedDay}
                       onChange={(e) => setSelectedDay(e.target.value)}
-                      className="select"
+                      className="form-select"
                     >
                       <option value="">--Select--</option>
-                      <option value="all" style={{ fontSize: "14px" }}>
-                        All
-                      </option>
+                      {days.length ? (
+                        <>
+                          <option value="all" style={{ fontSize: "14px" }}>
+                            All
+                          </option>
 
-                      {days.map((day, i) => (
-                        <option
-                          style={{ fontSize: "14px" }}
-                          key={i}
-                          value={day.exam_dayw}
-                        >
-                          {day.exam_dayw}
+                          {days.map((day, i) => (
+                            <option
+                              style={{ fontSize: "14px" }}
+                              key={i}
+                              value={day.exam_dayw}
+                            >
+                              {day.exam_dayw}
+                            </option>
+                          ))}
+                        </>
+                      ) : (
+                        <option value="" disabled>
+                          Loading...
                         </option>
-                      ))}
+                      )}
                     </select>
                   </td>
                 </tr>
@@ -93,26 +102,40 @@ const DayWise = () => {
                       name="slots"
                       value={selectedSlot}
                       onChange={(e) => setSelectedSlot(e.target.value)}
-                      className="select"
+                      className="form-select"
                     >
                       <option value="">--Select--</option>
-                      <option style={{ fontSize: "14px" }} value="all">
-                        All
-                      </option>
-                      <option style={{ fontSize: "14px" }} value="M">
-                        Morning
-                      </option>
-                      <option style={{ fontSize: "14px" }} value="A">
-                        Afternoon
-                      </option>
+
+                      {days.length ? (
+                        <>
+                          <option style={{ fontSize: "14px" }} value="all">
+                            All
+                          </option>
+                          <option style={{ fontSize: "14px" }} value="M">
+                            Morning
+                          </option>
+                          <option style={{ fontSize: "14px" }} value="A">
+                            Afternoon
+                          </option>
+                        </>
+                      ) : (
+                        <option value="" disabled>
+                          Loading...
+                        </option>
+                      )}
                     </select>
                   </td>
                 </tr>
                 <tr>
                   <td colSpan="2" style={{ textAlign: "center" }}>
-                    <button type="submit" className="button">
-                      Time Table
-                    </button>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      type="submit"
+                      className="button"
+                    >
+                      Day-wise TimeTable
+                    </Button>
                   </td>
                 </tr>
               </tbody>
@@ -122,7 +145,7 @@ const DayWise = () => {
             )}
           </form>
         </div>
-      </div>
+      </Card>
     </div>
   );
 };
