@@ -20,7 +20,7 @@ function App() {
         {/* Header */}
         <div className="header">
           <div className="logo">
-            <a href="#" title="Maharashtra State Board of Technical Education">
+            <a href="/" title="Maharashtra State Board of Technical Education">
               {" "}
               MSBTE
             </a>
