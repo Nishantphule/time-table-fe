@@ -12,11 +12,42 @@ import DaywiseTT from "./Components/Timetables/DaywiseTT";
 import CodewiseTT from "./Components/Timetables/CodewiseTT";
 import CenterwiseTT from "./Components/Timetables/CenterwiseTT";
 import { Paper } from "@mui/material";
+import { useEffect, useState } from "react";
+import loader from '../src/assests/imgs/server-soon.svg';
 
 function App() {
+
+  const [ip, setIp] = useState('');
+  const [allowAll, setAllowAll] = useState(false); // New state to allow all IPs
+  const [isAllowed, setIsAllowed] = useState(false);
+
+  const allowedIps = ["182.70.120.222"]; // Replace with your allowed IPs
+  
+  useEffect(() => {
+    const fetchIp = async () => {
+      try {
+        const response = await fetch('https://api.ipify.org?format=json');
+        const data = await response.json();
+        const userIp = data.ip;
+        setIp(userIp);
+        if (allowAll) {
+          setIsAllowed(true);
+        } else if (allowedIps.includes(userIp)) {
+          setIsAllowed(true);
+        } else {
+          setIsAllowed(false);
+        }
+      } catch (error) {
+        console.error('Error fetching the IP address:', error);
+      }
+    };
+
+    fetchIp();
+  }, []);
+
   return (
     <Paper elevation={3}>
-      <div className="App">
+{isAllowed && isAllowed ?<div className="App">
         {/* Header */}
         <div className="header">
           <div className="logo">
@@ -83,7 +114,13 @@ function App() {
             </li>
           </ul>
         </div>
-      </div>
+      </div>:ip!== "" && <div style={{display:"flex",justifyContent:"center",alignItems:"center",height:"100vh"}}>
+      <h3 style={{color:"red"}}><b>
+      Server will start soon...</b></h3>
+      <img src={loader} alt="Loading..." />
+        </div>}
+      
+
     </Paper>
   );
 }
