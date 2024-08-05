@@ -18,7 +18,7 @@ import loader from '../src/assests/imgs/server-soon.svg';
 function App() {
 
   const [ip, setIp] = useState('');
-  const [allowAll, setAllowAll] = useState(false); // New state to allow all IPs
+  const allowAll= false; // New state to allow all IPs
   const [isAllowed, setIsAllowed] = useState(false);
 
   const allowedIps = ["182.70.120.222"]; // Replace with your allowed IPs
@@ -43,11 +43,11 @@ function App() {
     };
 
     fetchIp();
-  }, []);
+  }, [allowAll,allowedIps]);
 
   return (
     <Paper elevation={3}>
-{isAllowed && isAllowed ?<div className="App">
+{isAllowed ?<div className="App">
         {/* Header */}
         <div className="header">
           <div className="logo">
