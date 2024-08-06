@@ -1,10 +1,5 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-// import InstituteWise from './Components/Forms/InstituteWise';
-// import CourseWise from './Components/Forms/CourseWise';
-// import DayWise from './Components/Forms/DayWise';
-// import CodeWise from './Components/Forms/CodeWise';
-// import CenterWise from './Components/Forms/CenterWise';
 import Home from "./Components/Home";
 import CoursewiseTT from "./Components/Timetables/CoursewiseTT";
 import InstitutewiseTT from "./Components/Timetables/InstitutewiseTT";
